@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MediaTagger
-build_property.ProjectDir = C:\Users\Jacob\Documents\School PROG2500 2024 jan-jul\asn1\Assignment1\Assignment1\MediaTagger\
+build_property.ProjectDir = C:\Users\Jacob\Documents\School PROG2500 2024 jan-jul\asn1\asn1\MediaTagger\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
