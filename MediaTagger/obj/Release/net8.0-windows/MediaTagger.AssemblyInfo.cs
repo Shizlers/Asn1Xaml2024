@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediaTagger")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+caaae4dd9338a30334554c69d3090ce426ab24e6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96fada20fae06c68461c768bc290ad1c62aede31")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediaTagger")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediaTagger")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
