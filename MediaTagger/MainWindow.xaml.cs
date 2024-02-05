@@ -147,6 +147,9 @@ namespace MediaTagger
                 currentFile.Tag.Year = UInt32.Parse(YEAR.Text, NumberStyles.Integer);//Works
                 //currentFile.Tag.Year = uint.Parse(YEAR.Text, System.Globalization.NumberStyles.HexNumber);//wrong 
                 //currentFile.Tag.Year = Convert.ToUInt32(YEAR.Text, 16); //wrong number
+
+                currentFile.Save();
+
             }
             catch (Exception ex)
             {
