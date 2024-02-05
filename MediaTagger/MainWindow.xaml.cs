@@ -31,25 +31,106 @@ namespace MediaTagger
 
         private void OpenFile(object sender, RoutedEventArgs e)
         {
-            //instantiating an OpenFileDialog
-            OpenFileDialog fileDlg = new OpenFileDialog();
+            try { 
+                //instantiating an OpenFileDialog
+                OpenFileDialog fileDlg = new OpenFileDialog();
 
-            //Create a file filter
-            fileDlg.Filter = "MP3 files (*.MP3)|*.MP3 | All files (*.*)|*.*";
+                //Create a file filter
+                fileDlg.Filter = "MP3 files (*.MP3)|*.MP3 | All files (*.*)|*.*";
 
-            //ShowDialog shows onscreen for the user
-            //By default it return true if the user selects a file and hits "Open"
-            if (fileDlg.ShowDialog() == true)
-            {
-                //The filename property stores the full path that was selected
-                fileNameBox.Text = fileDlg.FileName;
+                //ShowDialog shows onscreen for the user
+                //By default it return true if the user selects a file and hits "Open"
+                if (fileDlg.ShowDialog() == true)
+                {
+                    //The filename property stores the full path that was selected
+                    fileNameBox.Text = fileDlg.FileName;
 
-                //Example of creating a TagLib file object, for accessing mp3 metadata
-                currentFile = TagLib.File.Create(fileDlg.FileName);
+                    //Example of creating a TagLib file object, for accessing mp3 metadata
+                    currentFile = TagLib.File.Create(fileDlg.FileName);
 
-                //Set the source of the media player element.
-                myMediaPlayer.Source = new Uri(fileDlg.FileName);
+                    //Set the source of the media player element.
+                    myMediaPlayer.Source = new Uri(fileDlg.FileName);
+
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+        //Play
+        private void PlayCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = currentFile != null;
+        }
+
+        private void PlayExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            myMediaPlayer.LoadedBehavior = MediaState.Manual;
+
+            myMediaPlayer.Play();
+        }
+        //Pause
+        private void PauseCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            //This exists but makes the pause button behave weird
+            e.CanExecute = //myMediaPlayer.CanPause && 
+                currentFile != null;
+        }
+
+        private void PauseExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            myMediaPlayer.LoadedBehavior = MediaState.Manual;
+
+            myMediaPlayer.Pause();
+        }
+        //Open
+        private void OpenCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = currentFile != null;
+        }
+
+        private void OpenExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            //reading tag data from currently selected file.
+            try
+            {
+                //Get data
+                var title = currentFile.Tag.Title;
+                var artist = currentFile.Tag.AlbumArtists;
+                var album = currentFile.Tag.Album;
+                var year = currentFile.Tag.Year;
+
+                //Place data
+                TITLE.Text = title;
+                ARTIST.Text = artist.ToString(); //seems to be an array, concat into a single string first
+                ALBUM.Text = album;
+                YEAR.Text = year.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+        //Save
+        private void SaveCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = currentFile != null;
+        }
+
+        private void SaveExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            //TODO needs fixing up, seems to not work
+
+            currentFile.Tag.Title = TITLE.Text;
+
+            
+            //var artist = currentFile.Tag.AlbumArtists;
+
+            var album = currentFile.Tag.Album;
+
+            //convert string to uint
+            //currentFile.Tag.Year = YEAR.Text;
         }
     }
 }
