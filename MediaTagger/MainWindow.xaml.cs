@@ -23,6 +23,7 @@ namespace MediaTagger
     /// </summary>
     public partial class MainWindow : Window
     {
+        //global vars to reference
         TagLib.File currentFile;
         string ArtistMover;
 
@@ -37,11 +38,10 @@ namespace MediaTagger
                 //instantiating an OpenFileDialog
                 OpenFileDialog fileDlg = new OpenFileDialog();
 
-                //Create a file filter / shows mp3 only is search but fails?
+                //Create a file filter / shows mp3 only in search
                 fileDlg.Filter = //"MP3 files (*.MP3)|*.MP3 | " +
                     "All files (*.*)|*.*";
 
-                //ShowDialog shows onscreen for the user
                 //By default it return true if the user selects a file and hits "Open"
                 if (fileDlg.ShowDialog() == true)
                 {
@@ -110,11 +110,8 @@ namespace MediaTagger
                 for (int i = 0; i < artist.Length; i++) {
                     if (i != 0) { ArtistMover += ", "; }
                     ArtistMover += artist[i];
-                }
-                
+                }                
                 ARTIST.Text = ArtistMover; //seems to be an array, concat into a single string first
-
-
                 ALBUM.Text = album;
                 YEAR.Text = year.ToString();
             }
@@ -133,23 +130,17 @@ namespace MediaTagger
         {
             //TODO needs fixing up, seems to not work
             try { 
-                ////todo: Saves locally, make write to main
-
                 currentFile.Tag.Title = TITLE.Text;
                 
-                //Need to make a array first (maybe also check for commas)
-
-                currentFile.Tag.AlbumArtists = ARTIST.Text.Split(", "); // works, needs to become array, did
+                //Need to make a array first (maybe also check for commas
+                currentFile.Tag.AlbumArtists = ARTIST.Text.Split(", "); 
 
                 currentFile.Tag.Album = ALBUM.Text;
 
                 //convert string to uint
-                currentFile.Tag.Year = UInt32.Parse(YEAR.Text, NumberStyles.Integer);//Works
-                //currentFile.Tag.Year = uint.Parse(YEAR.Text, System.Globalization.NumberStyles.HexNumber);//wrong 
-                //currentFile.Tag.Year = Convert.ToUInt32(YEAR.Text, 16); //wrong number
+                currentFile.Tag.Year = UInt32.Parse(YEAR.Text, NumberStyles.Integer);
 
                 currentFile.Save();
-
             }
             catch (Exception ex)
             {
