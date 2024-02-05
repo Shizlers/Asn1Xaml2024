@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace MediaTagger
     public partial class MainWindow : Window
     {
         TagLib.File currentFile;
+        string ArtistMover;
 
         public MainWindow()
         {
@@ -35,8 +37,9 @@ namespace MediaTagger
                 //instantiating an OpenFileDialog
                 OpenFileDialog fileDlg = new OpenFileDialog();
 
-                //Create a file filter
-                fileDlg.Filter = "MP3 files (*.MP3)|*.MP3 | All files (*.*)|*.*";
+                //Create a file filter / shows mp3 only is search but fails?
+                fileDlg.Filter = //"MP3 files (*.MP3)|*.MP3 | " +
+                    "All files (*.*)|*.*";
 
                 //ShowDialog shows onscreen for the user
                 //By default it return true if the user selects a file and hits "Open"
@@ -103,7 +106,15 @@ namespace MediaTagger
 
                 //Place data
                 TITLE.Text = title;
-                ARTIST.Text = artist.ToString(); //seems to be an array, concat into a single string first
+                ArtistMover = "";
+                for (int i = 0; i < artist.Length; i++) {
+                    if (i != 0) { ArtistMover += ", "; }
+                    ArtistMover += artist[i];
+                }
+                
+                ARTIST.Text = ArtistMover; //seems to be an array, concat into a single string first
+
+
                 ALBUM.Text = album;
                 YEAR.Text = year.ToString();
             }
@@ -117,20 +128,30 @@ namespace MediaTagger
         {
             e.CanExecute = currentFile != null;
         }
-
+        
         private void SaveExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             //TODO needs fixing up, seems to not work
+            try { 
+                ////todo: Saves locally, make write to main
 
-            currentFile.Tag.Title = TITLE.Text;
+                currentFile.Tag.Title = TITLE.Text;
+                
+                //Need to make a array first (maybe also check for commas)
 
-            
-            //var artist = currentFile.Tag.AlbumArtists;
+                currentFile.Tag.AlbumArtists = ARTIST.Text.Split(", "); // works, needs to become array, did
 
-            var album = currentFile.Tag.Album;
+                currentFile.Tag.Album = ALBUM.Text;
 
-            //convert string to uint
-            //currentFile.Tag.Year = YEAR.Text;
+                //convert string to uint
+                currentFile.Tag.Year = UInt32.Parse(YEAR.Text, NumberStyles.Integer);//Works
+                //currentFile.Tag.Year = uint.Parse(YEAR.Text, System.Globalization.NumberStyles.HexNumber);//wrong 
+                //currentFile.Tag.Year = Convert.ToUInt32(YEAR.Text, 16); //wrong number
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
