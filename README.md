@@ -15,12 +15,3 @@ have buttons to show menus of song information and edit information
 have the edit save back to the file
 
 ------------------------------
-
-asn1prep has most functionality
-
-fixes, 
-file search needs to show mp3*
-pause button
-save needs to work
-one of the shown datas fails, fix that
-and last but not least, translate clicks into commands
